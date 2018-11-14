@@ -12,33 +12,13 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+### `explain`
+1、先安装依赖 （我是直接用的yarn，npm的可以npm install）
+2、装完依赖去node_modules里的webpack-dev-server下的lib下的server.js里配置正向代理 在122行express实例之后
+3、用的redux和react-redux来管理数据 actionCreator去做axios请求 tabreducer里操作数据
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+整个流程：
+	在tab的组件里获取store里的data（我们要渲染的数据通过axios请求到的）,defaultData(一开始请求到的数据，就是全部数据)
+页面初次渲染的时候data是全部数据，直接渲染全部数据，当在输入框中输入内容搜索的时候会触发输入框上的onChange事件，在事件里先获取到输入框的内容，分两种情况：
+	1、输入框内容为空的时候，直接去设置data为defaultData（一开始请求的全部数据）
+	2、输入框内容不为空的时候，创建一个正则对象，检索包含输入的内容（全局检索不区分大小写），然后创建一个空数组，在去循环遍历defaultData，设置一个标志位，循环的defaultData里每一条数据的tags用上面创建的正则去验证，验证为true的就把标志位设为true，然后把所有标志位为true的数据存入新创建的那个空数组中，循环结束后派发一个action，并把这个新数组传进去，在reducer那边接收到，去设置data为这个新数组并返回，这样表格就重新渲染为所搜索的数据。
