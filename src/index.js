@@ -1,8 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import "../node_modules/antd/dist/antd.css"
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import "./index.css"
+
+
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+
+moment.locale('zh-cn');
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
@@ -10,3 +17,9 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
+/*
+app.use("/v2",httpProxyMiddleware({
+    target:"http://www.mocky.io",
+    changeOrigin:true
+  }))
+*/
